@@ -9,7 +9,7 @@ var model = {
 	// refers to the current sum or total
 	displayTotal: 0,
 
-	// refers to operators +-*/
+	// refers to operators +, -, *, and /
 	displayOperator: null
 
 };
@@ -18,6 +18,7 @@ var model = {
 
 /*  CONTROLLER
 ==============================*/
+
 var controller = {
 
 	init: function(){
@@ -33,13 +34,15 @@ var controller = {
 		}
 	},
 
+	setOperator: function(operator){
+		model.displayOperator = operator;
+	},
+
 	getDisplayNumber: function(){
 		return model.displayNumber;
 	}
 
-
 };
-
 
 
 
@@ -49,17 +52,29 @@ var controller = {
 view = {
 
 	numButtons: $(".num"),
+	operatorButtons:  $(".operator"),
 
 	init: function(){
-		for (var i = 0; i < this.numButtons.length; i++){
-			var button = $(this.numButtons[i]);
-			var num = Number(button.text());
-			this.createNumHandler(button, num);
+		//loop through number buttons and create click handlers
+		for (var n = 0; n < this.numButtons.length; n++){
+			var numButton = $(this.numButtons[n]);
+			var num = numButton.text();
+			this.createNumHandler(numButton, num);
+		}
+		//loop through operator buttons and create click handlers
+		for (var i = 0; i < this.operatorButtons.length; i++){
+			var operatorButton = $(this.operatorButtons[i]);
+			var operator = operatorButton.text();
+			this.createOperHandler(operatorButton, operator);
 		}
 	},
 
 	renderDisplayNumber: function(num){
 		$(".display").text(num);
+	},
+
+	renderOperator: function(operator){
+		$(".display").text(operator);
 	},
 
 	createNumHandler: function(button, num){
@@ -68,8 +83,15 @@ view = {
 			var newNum = controller.getDisplayNumber();
 			view.renderDisplayNumber(newNum);
 		});
+	},
+
+	createOperHandler: function(button, operator){
+		button.on("click", function(){
+			controller.setOperator(operator);
+			view.renderOperator(operator);
+		});
 	}
-	
+
 };
 
 
