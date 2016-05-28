@@ -34,11 +34,15 @@ var controller = {
 			return;
 		} else if(num === ""){
 			model.displayNumber = "";
-		} else if(model.displayNumber === "0"){
+		} else if(model.displayNumber === "0" && num !== "clear"){
 			model.displayNumber = num;
 
 		} else {
-			model.displayNumber += num;
+			if(num === "clear"){
+				model.displayNumber = "0";
+			} else {
+				model.displayNumber += num;
+			}
 		}
 	},
 
@@ -74,6 +78,10 @@ var controller = {
 	},
 
 	setOperator: function(operator){
+		if(operator === "clear"){
+			model.operator = "";
+			return;
+		}
 		this.checkCalculation();
 		var number = this.getDisplayNumber();
 		if(number.length > 0){
@@ -133,7 +141,8 @@ view = {
 			this.createOperHandler(operatorButton, operator);
 		}
 		view.createEqualHandler();
-		// view.createCEHandler();
+		view.createCEHandler();
+		view.createCHandler();
 	},
 
 	displayNumber: function(num){
@@ -166,18 +175,28 @@ view = {
 
 	createEqualHandler: function(){
 		$("#equals").on("click", function(){
-			// controller.checkCalculation();
+			controller.checkCalculation();
 			controller.setOperator("");
 			view.displayNumber(controller.getTotal());
 		});
 	},
 
-	// createCEHandler: function(){
-	// 	$("#ce").on("click", function(){
-	// 		controller.setDisplayNumber("");
-	// 		view.displayNumber("");
-	// 	});
-	// }
+	createCEHandler: function(){
+		$("#ce").on("click", function(){
+			controller.setDisplayNumber("clear");
+			view.displayNumber(controller.getDisplayNumber());
+		});
+	},
+
+	createCHandler: function(){
+		$("#c").on("click", function(){
+			controller.setDisplayNumber("clear");
+			controller.storeNumber("");
+			controller.setTotal(null);
+			controller.setOperator("clear");
+			view.displayNumber(controller.getDisplayNumber());
+		});
+	}
 
 };
 
