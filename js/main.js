@@ -156,6 +156,9 @@ view = {
 	createNumHandler: function(button, num){
 		button.on("click", function(){
 			controller.setDisplayNumber(num);
+			if(controller.getOperator() === "equals"){
+				controller.setTotal(null);
+			}
 			var newNum = controller.getDisplayNumber();
 			view.displayNumber(newNum);
 		});
@@ -175,8 +178,7 @@ view = {
 
 	createEqualHandler: function(){
 		$("#equals").on("click", function(){
-			controller.checkCalculation();
-			controller.setOperator("");
+			controller.setOperator("equals");
 			view.displayNumber(controller.getTotal());
 		});
 	},
