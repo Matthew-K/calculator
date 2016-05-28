@@ -4,7 +4,7 @@
 var model = {
 
 	// refers to every number that is not the total
-	displayNumber: "",
+	displayNumber: "0",
 
 	// refers to a temporary stored number when an operator is clicked.
 	storedNumber: "",
@@ -34,6 +34,9 @@ var controller = {
 			return;
 		} else if(num === ""){
 			model.displayNumber = "";
+		} else if(model.displayNumber === "0"){
+			model.displayNumber = num;
+
 		} else {
 			model.displayNumber += num;
 		}
@@ -116,6 +119,7 @@ view = {
 	operatorButtons:  $(".operator"),
 
 	init: function(){
+		view.displayNumber(controller.getDisplayNumber());
 		//loop through number buttons and create click handlers
 		for (var n = 0; n < this.numButtons.length; n++){
 			var numButton = $(this.numButtons[n]);
@@ -128,7 +132,8 @@ view = {
 			var operator = operatorButton.text();
 			this.createOperHandler(operatorButton, operator);
 		}
-
+		view.createEqualHandler();
+		// view.createCEHandler();
 	},
 
 	displayNumber: function(num){
@@ -158,6 +163,21 @@ view = {
 			}
 		});
 	},
+
+	createEqualHandler: function(){
+		$("#equals").on("click", function(){
+			// controller.checkCalculation();
+			controller.setOperator("");
+			view.displayNumber(controller.getTotal());
+		});
+	},
+
+	// createCEHandler: function(){
+	// 	$("#ce").on("click", function(){
+	// 		controller.setDisplayNumber("");
+	// 		view.displayNumber("");
+	// 	});
+	// }
 
 };
 
