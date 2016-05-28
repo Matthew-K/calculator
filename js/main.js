@@ -35,12 +35,23 @@ var controller = {
 		} else if(num === ""){
 			model.displayNumber = "";
 		} else if(model.displayNumber === "0" && num !== "clear"){
-			model.displayNumber = num;
-
+			if(num === "."){
+				model.displayNumber = "0.";
+			} else {
+				model.displayNumber = num;
+			}
 		} else {
 			if(num === "clear"){
 				model.displayNumber = "0";
 			} else {
+				if(num === "."){
+					if(model.displayNumber.indexOf(".") >= 0){
+						return;
+					} else if (model.displayNumber.length === 0){
+						model.displayNumber = "0.";
+						return;
+					}
+				}
 				model.displayNumber += num;
 			}
 		}
@@ -111,9 +122,6 @@ var controller = {
 		return model.total;
 	}
 
-
-
-
 };
 
 
@@ -143,6 +151,7 @@ view = {
 		view.createEqualHandler();
 		view.createCEHandler();
 		view.createCHandler();
+		view.createDecimalHandler();
 	},
 
 	displayNumber: function(num){
@@ -179,7 +188,12 @@ view = {
 	createEqualHandler: function(){
 		$("#equals").on("click", function(){
 			controller.setOperator("equals");
-			view.displayNumber(controller.getTotal());
+			var total = controller.getTotal();
+			if (total === null){
+				return;
+			} else {
+				view.displayNumber(total);
+			}
 		});
 	},
 
@@ -197,6 +211,14 @@ view = {
 			controller.setTotal(null);
 			controller.setOperator("clear");
 			view.displayNumber(controller.getDisplayNumber());
+		});
+	},
+
+	createDecimalHandler: function(){
+		$("#decimal").on("click", function(){
+			controller.setDisplayNumber(".");
+			var newNum = controller.getDisplayNumber();
+			view.displayNumber(newNum);
 		});
 	}
 
