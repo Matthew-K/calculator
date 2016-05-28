@@ -6,14 +6,14 @@ var model = {
 	// refers to every number that is not the total
 	displayNumber: "",
 
-	// refers to a temporary stored number when an operator is clicked
-	storeNumber: "",
+	// refers to a temporary stored number when an operator is clicked.
+	storedNumber: "",
 
 	// refers to the current sum or total
-	displayTotal: 0,
+	total: null,
 
 	// refers to operators +, -, *, and /
-	displayOperator: null,
+	operator: "",
 
 };
 
@@ -40,21 +40,68 @@ var controller = {
 	},
 
 	storeNumber: function(num){
-		model.storeNumber = num;
+		model.storedNumber = num;
+	},
+
+	checkCalculation: function(){
+		if(model.displayNumber.length > 0 && model.operator.length > 0 && model.storedNumber.length > 0){
+			var num1 = null;
+			var num2 = Number(this.getDisplayNumber());
+			if(model.total === null){
+				num1 = Number(this.getStoredNumber());	
+			} else {
+				num1 = this.getTotal();
+			}
+			var operator = this.getOperator();
+			switch(operator) {
+			    case "+":
+			    	this.setTotal(num1 + num2);
+			        break;
+			    case "-":
+			    	this.setTotal(num1 - num2);
+			        break;
+			    case "*":
+			    	this.setTotal(num1 * num2);
+			        break;
+			    case "/":
+			    	this.setTotal(num1 / num2);
+			        break;
+			}
+		}
 	},
 
 	setOperator: function(operator){
+		this.checkCalculation();
 		var number = this.getDisplayNumber();
 		if(number.length > 0){
 			this.storeNumber(number);
 			this.setDisplayNumber("");
 		}
-		model.displayOperator = operator;
+		model.operator = operator;
+	},
+
+	setTotal: function(num){
+		model.total = num;
 	},
 
 	getDisplayNumber: function(){
 		return model.displayNumber;
+	},
+
+	getStoredNumber: function(){
+		return model.storedNumber;
+	},
+
+	getOperator: function(){
+		return model.operator;
+	},
+
+	getTotal: function(){
+		return model.total;
 	}
+
+
+
 
 };
 
@@ -81,9 +128,10 @@ view = {
 			var operator = operatorButton.text();
 			this.createOperHandler(operatorButton, operator);
 		}
+
 	},
 
-	renderDisplayNumber: function(num){
+	displayNumber: function(num){
 		$(".display").text(num);
 	},
 
@@ -95,16 +143,21 @@ view = {
 		button.on("click", function(){
 			controller.setDisplayNumber(num);
 			var newNum = controller.getDisplayNumber();
-			view.renderDisplayNumber(newNum);
+			view.displayNumber(newNum);
 		});
 	},
 
 	createOperHandler: function(button, operator){
 		button.on("click", function(){
 			controller.setOperator(operator);
-			view.renderOperator(operator);
+			var total = controller.getTotal();
+			if (total === null){
+				view.displayNumber(controller.getStoredNumber());
+			} else {
+				view.displayNumber(controller.getTotal());
+			}
 		});
-	}
+	},
 
 };
 
