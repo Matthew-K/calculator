@@ -15,8 +15,11 @@ var model = {
 	// refers to operators +, -, *, and /
 	operator: "",
 
-	// refers to max number that can be calculated to. Anything over this should display an error
-	max: 999999999999999
+	// refers to max number that can be calculated. Anything over this should display an error
+	max: 999999999999999,
+
+	// refers to min number that can be calculated. Anything under this should display an error
+	min: -999999999999999,
 
 };
 
@@ -75,10 +78,15 @@ var controller = {
 			}
 			var operator = this.getOperator();
 			var total = this.calculateTotal(num1, num2, operator);
+			// if total > than the max, set the total as an error
 			// also accounts for division by zero since quotient "Infinity" is greater than the max
 			if( total > model.max){
 				return this.setTotal("E");
-			} else{
+			// else, if total is less than the min, set the total as an error
+			} else if(total < model.min){
+				return this.setTotal("E");
+			// else, set the total to whatever was calculated
+			} else {
 				return this.setTotal(total);
 			}
 		}
@@ -186,41 +194,6 @@ view = {
 	displayNumber: function(num){
 		$(".display").text(num);
 	},
-
-	// displayNumber: function(num){
-	// 	if (num === undefined){
-	// 		// console.log
-	// 		$(".display").text(num);
-	// 	}
-	// 	// console.log("present")
-	// 	var numString = num.toString();
-	// 	// if (numString.length < 15 || num === undefined){
-	// 	if (numString.length < 15 || num === undefined){
-	// 		$(".display").text(num);
-	// 	} else {
-	// 		// console.log('here');
-	// 		console.log("LENGTH");
-	// 		console.log(numString.length);
-	// 		console.log(numString);
-	// 		// if(numString.search("e-") !== -1){
-	// 		// 	var start = numString.indexOf("e-");
-	// 		// 	console.log(start);
-	// 		// 	var toSlice = numString.slice(start);
-	// 		// 	console.log(toSlice);
-	// 		// 	var toDisplay = numString.slice(0, 14 - toSlice.length) + toSlice;
-	// 		// 	// $(".display").text(toDisplay);
-	// 		// 	$(".display").text("~0");
-	// 		// 	setTimeout(function(){ 
-	// 		// 		$(".display").text(0); }, 1000);
-	// 		}
-	// 		// var displayThis = numString.slice(0, 14);
-	// 		console.log("---------------------")
-	// 		// console.log(displayThis);
-	// 		// $(".display").text(Number(num));
-	// 		// $(".display").text(displayThis);
-	// 	// }
-	// },
-
 
 	renderOperator: function(operator){
 		$(".display").text(operator);
