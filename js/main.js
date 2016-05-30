@@ -15,6 +15,9 @@ var model = {
 	// refers to operators +, -, *, and /
 	operator: "",
 
+	// refers to max number that can be calculated to. Anything over this should display an error
+	max: 999999999999999
+
 };
 
 
@@ -71,21 +74,28 @@ var controller = {
 				num1 = this.getTotal();
 			}
 			var operator = this.getOperator();
-			switch(operator) {
-			    case "+":
-			    	this.setTotal(num1 + num2);
-			        break;
-			    case "-":
-			    	this.setTotal(num1 - num2);
-			        break;
-			    case "*":
-			    	this.setTotal(num1 * num2);
-			        break;
-			    case "/":
-			    	this.setTotal(num1 / num2);
-			        break;
+			var total = this.calculateTotal(num1, num2, operator);
+			if( total > model.max){
+				return this.setTotal("E");
+			} else{
+				return this.setTotal(total);
 			}
 		}
+	},
+
+	calculateTotal: function(num1, num2, operator){
+		var newTotal = null;
+		switch(operator) {
+		    case "+":
+		    	return(num1 + num2);
+		    case "-":
+		    	return (num1 - num2);
+		    case "*":
+		    	return(num1 * num2);
+		    case "/":
+		    	return(num1 / num2);
+		}
+
 	},
 
 	setOperator: function(operator){
@@ -93,7 +103,9 @@ var controller = {
 			model.operator = "";
 			return;
 		}
-		this.checkCalculation();
+		if(this.checkCalculation() === "E"){
+			return;
+		}	
 		var number = this.getDisplayNumber();
 		if(number.length > 0){
 			this.storeNumber(number);
