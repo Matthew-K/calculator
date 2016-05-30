@@ -75,6 +75,7 @@ var controller = {
 			}
 			var operator = this.getOperator();
 			var total = this.calculateTotal(num1, num2, operator);
+			// also accounts for division by zero since quotient "Infinity" is greater than the max
 			if( total > model.max){
 				return this.setTotal("E");
 			} else{
