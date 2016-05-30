@@ -30,7 +30,7 @@ var controller = {
 	},
 
 	setDisplayNumber: function(num){
-		if (model.displayNumber.length === 15){
+		if ((num + model.displayNumber).length === 16){
 			return;
 		} else if(num === ""){
 			model.displayNumber = "";
