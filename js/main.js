@@ -94,9 +94,19 @@ var controller = {
 		    case "*":
 		    	return(num1 * num2);
 		    case "/":
-		    	return(num1 / num2);
+		    	var num = num1 / num2;
+		    	return(controller.checkReallySmall(num));
 		}
+	},
 
+	// check if the number contains a negative exponent. If so, just return 0.
+	checkReallySmall: function(num){
+		var numString = num.toString();
+		if (numString.search("e-") !== -1){
+			return 0;
+		} else {
+			return num;
+		}
 	},
 
 	setOperator: function(operator){
@@ -176,6 +186,41 @@ view = {
 	displayNumber: function(num){
 		$(".display").text(num);
 	},
+
+	// displayNumber: function(num){
+	// 	if (num === undefined){
+	// 		// console.log
+	// 		$(".display").text(num);
+	// 	}
+	// 	// console.log("present")
+	// 	var numString = num.toString();
+	// 	// if (numString.length < 15 || num === undefined){
+	// 	if (numString.length < 15 || num === undefined){
+	// 		$(".display").text(num);
+	// 	} else {
+	// 		// console.log('here');
+	// 		console.log("LENGTH");
+	// 		console.log(numString.length);
+	// 		console.log(numString);
+	// 		// if(numString.search("e-") !== -1){
+	// 		// 	var start = numString.indexOf("e-");
+	// 		// 	console.log(start);
+	// 		// 	var toSlice = numString.slice(start);
+	// 		// 	console.log(toSlice);
+	// 		// 	var toDisplay = numString.slice(0, 14 - toSlice.length) + toSlice;
+	// 		// 	// $(".display").text(toDisplay);
+	// 		// 	$(".display").text("~0");
+	// 		// 	setTimeout(function(){ 
+	// 		// 		$(".display").text(0); }, 1000);
+	// 		}
+	// 		// var displayThis = numString.slice(0, 14);
+	// 		console.log("---------------------")
+	// 		// console.log(displayThis);
+	// 		// $(".display").text(Number(num));
+	// 		// $(".display").text(displayThis);
+	// 	// }
+	// },
+
 
 	renderOperator: function(operator){
 		$(".display").text(operator);
