@@ -103,15 +103,21 @@ var controller = {
 			model.operator = "";
 			return;
 		}
-		if(this.checkCalculation() === "E"){
-			return;
-		}	
+		this.checkCalculation();
 		var number = this.getDisplayNumber();
 		if(number.length > 0){
 			this.storeNumber(number);
 			this.setDisplayNumber("");
 		}
 		model.operator = operator;
+	},
+
+	checkForError: function(){
+		if(controller.getTotal() === "E"){
+			return true;
+		} else{
+			return false;
+		}
 	},
 
 	setTotal: function(num){
@@ -176,12 +182,19 @@ view = {
 
 	createNumHandler: function(button, num){
 		button.on("click", function(){
-			controller.setDisplayNumber(num);
-			if(controller.getOperator() === "equals"){
-				controller.setTotal(null);
+			// if there is an error, return
+			if(controller.checkForError()){
+				return;
+			// else continue 
+			} else {
+				controller.setDisplayNumber(num);
+				if(controller.getOperator() === "equals"){
+					controller.setTotal(null);
+				} else {
+				var newNum = controller.getDisplayNumber();
+				view.displayNumber(newNum);
+				}
 			}
-			var newNum = controller.getDisplayNumber();
-			view.displayNumber(newNum);
 		});
 	},
 
@@ -199,20 +212,32 @@ view = {
 
 	createEqualHandler: function(){
 		$("#equals").on("click", function(){
-			controller.setOperator("equals");
-			var total = controller.getTotal();
-			if (total === null){
+			// if there is an error, return
+			if(controller.checkForError()){
 				return;
+			// else continue
 			} else {
-				view.displayNumber(total);
+				controller.setOperator("equals");
+				var total = controller.getTotal();
+				if (total === null){
+					return;
+				} else {
+					view.displayNumber(total);
+				}
 			}
 		});
 	},
 
 	createCEHandler: function(){
 		$("#ce").on("click", function(){
-			controller.setDisplayNumber("clear");
-			view.displayNumber(controller.getDisplayNumber());
+			// if there is an error, function will return and button won't work
+			if(controller.checkForError()){
+				return;
+			// else continue
+			} else {
+				controller.setDisplayNumber("clear");
+				view.displayNumber(controller.getDisplayNumber());
+			}
 		});
 	},
 
@@ -228,12 +253,17 @@ view = {
 
 	createDecimalHandler: function(){
 		$("#decimal").on("click", function(){
-			controller.setDisplayNumber(".");
-			var newNum = controller.getDisplayNumber();
-			view.displayNumber(newNum);
+			// if there is an error, function will return and button won't work
+			if(controller.checkForError()){
+				return;
+			// else continue
+			} else {
+				controller.setDisplayNumber(".");
+				var newNum = controller.getDisplayNumber();
+				view.displayNumber(newNum);
+			}
 		});
 	}
-
 };
 
 
