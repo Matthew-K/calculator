@@ -192,7 +192,8 @@ view = {
 	},
 
 	displayNumber: function(num){
-		$(".display").text(num);
+		var numString = num.toString();
+		$(".display").text(numString.slice(0,14));
 	},
 
 	renderOperator: function(operator){
