@@ -21,7 +21,7 @@ var model = {
 	// refers to min number that can be calculated. Anything under this should display an error
 	min: -999999999999999,
 
-};
+}; // end of model
 
 
 
@@ -35,7 +35,17 @@ var controller = {
 	},
 
 	setDisplayNumber: function(num){
-		if((num.toString()).indexOf("-") != -1){
+		if(num[0] === "X"){
+			if(num === "XO"){
+				model.displayNumber = "0";
+				return;
+			} else {
+				model.displayNumber = num.slice(1);
+				return;
+			}
+		}
+		// used when checking for negative numbers
+		 else if((num.toString()).indexOf("-") != -1){
 			if(num.toString().length === 16){
 				model.displayNumber = num.toString();
 				return;
@@ -172,7 +182,7 @@ var controller = {
 		return model.total;
 	}
 
-};
+}; // end of controller
 
 
 
@@ -203,6 +213,7 @@ view = {
 		view.createCHandler();
 		view.createDecimalHandler();
 		view.createPosNegHandler();
+		view.createRemoveHandler();
 	},
 
 	displayNumber: function(num){
@@ -319,8 +330,42 @@ view = {
 				view.displayNumber(controller.getDisplayNumber());
 			}
 		});
+	},
+
+	createRemoveHandler: function(){
+		$("#remove").on("click", function(){
+			// if there is an error, function will return and button won't work
+			if(controller.checkForError()){
+				return;
+			// else continue
+			} else {
+				var displayNumber = controller.getDisplayNumber();
+				if (displayNumber.length >= 1 && displayNumber !== "0"){
+					// check if only "." and "0"s remain in the displayNumber. If so, pass "X0" to controller.setDisplayNumber();
+					var exp = /[1-9]/g;
+					var check = displayNumber.match(exp);
+					if(check.length === 1){
+						controller.setDisplayNumber("X0");
+					// else if the displayNumber has a "-" and only one number, pass "X0" to controller.setDisplayNumber(); 
+					} else if(displayNumber.length === 2 && displayNumber[0] === '-'){
+						controller.setDisplayNumber("X0");
+					// else if the displayNumber is only one number, pass "X0" to controller.setDisplayNumber();
+					} else if (displayNumber.length === 1){
+						controller.setDisplayNumber("X0");
+					// else pass in "X" + the displayNumber without it's last number to controller.setDisplayNumber(). ex: if display number is 1234 pass in "X123"
+					} else {
+						var newDisplay = displayNumber.slice(0, displayNumber.length -1);
+						model.displayNumber = newDisplay;
+						controller.setDisplayNumber("X" + newDisplay);
+					}
+					// controller.setDisplayNumber() has now changed model.displayNumber depending on the input passed from above. Display it.
+					return view.displayNumber(controller.getDisplayNumber());
+				}
+			}
+		});
 	}
-};
+
+}; // end of view
 
 
 
