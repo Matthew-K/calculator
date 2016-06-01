@@ -35,17 +35,9 @@ var controller = {
 	},
 
 	setDisplayNumber: function(num){
-
-		// console.log("present");
-		// console.log(num);
-		// if the length of num plus the displayNumber has a "-" and is equal to 16, set a new displayNumber
-		// if((num + model.displayNumber).indexOf("-") != -1 && (num + model.displayNumber).length === 16){
-		// 	model.displayNumber += num;
-		// }
-		// if((num.toString()).indexOf("-") != -1 && (num + model.displayNumber).length === 16){
 		if((num.toString()).indexOf("-") != -1){
 			if(num.toString().length === 16){
-				model.displayNumber = num;
+				model.displayNumber = num.toString();
 				return;
 			} else {
 				model.displayNumber = "";
@@ -92,7 +84,7 @@ var controller = {
 			if(model.total === null){
 				num1 = Number(this.getStoredNumber());	
 			} else {
-				num1 = this.getTotal();
+				num1 = Number(this.getTotal());
 			}
 			var operator = this.getOperator();
 			var total = this.calculateTotal(num1, num2, operator);
@@ -107,6 +99,8 @@ var controller = {
 			} else {
 				return this.setTotal(total);
 			}
+		} else {
+			return;
 		}
 	},
 
@@ -141,7 +135,8 @@ var controller = {
 			return;
 		}
 		this.checkCalculation();
-		var number = this.getDisplayNumber();
+		// return;
+		var number = controller.getDisplayNumber();
 		if(number.length > 0){
 			this.storeNumber(number);
 			this.setDisplayNumber("");
@@ -213,9 +208,9 @@ view = {
 	displayNumber: function(num){
 		var numString = num.toString();
 		if(numString.indexOf("-") != -1){
-			$(".display").text(numString.slice(0,15));
+			$(".display").text(numString.slice(0,16));
 		} else {
-			$(".display").text(numString.slice(0,14));
+			$(".display").text(numString.slice(0,15));
 		}
 	},
 
