@@ -32,14 +32,32 @@ var controller = {
 
 	init: function(){
 		view.init();
-
 	},
 
 	setDisplayNumber: function(num){
-		if ((num + model.displayNumber).length === 16){
-			return;
-		} else if(num === ""){
+
+		// console.log("present");
+		// console.log(num);
+		// if the length of num plus the displayNumber has a "-" and is equal to 16, set a new displayNumber
+		// if((num + model.displayNumber).indexOf("-") != -1 && (num + model.displayNumber).length === 16){
+		// 	model.displayNumber += num;
+		// }
+		// if((num.toString()).indexOf("-") != -1 && (num + model.displayNumber).length === 16){
+		if((num.toString()).indexOf("-") != -1){
+			if(num.toString().length === 16){
+				model.displayNumber = num;
+				return;
+			} else {
+				model.displayNumber = "";
+				model.displayNumber += num;
+				return;
+			}
+		}else if(num === ""){
 			model.displayNumber = "";
+		}
+		// else if the length of num plus the displayNumber is equal to 16, don't set a new displayNumber
+		else if ((num + model.displayNumber).length === 16){
+			return;
 		} else if(model.displayNumber === "0" && num !== "clear"){
 			if(num === "."){
 				model.displayNumber = "0.";
@@ -189,11 +207,16 @@ view = {
 		view.createCEHandler();
 		view.createCHandler();
 		view.createDecimalHandler();
+		view.createPosNegHandler();
 	},
 
 	displayNumber: function(num){
 		var numString = num.toString();
-		$(".display").text(numString.slice(0,14));
+		if(numString.indexOf("-") != -1){
+			$(".display").text(numString.slice(0,15));
+		} else {
+			$(".display").text(numString.slice(0,14));
+		}
 	},
 
 	renderOperator: function(operator){
@@ -281,6 +304,21 @@ view = {
 				controller.setDisplayNumber(".");
 				var newNum = controller.getDisplayNumber();
 				view.displayNumber(newNum);
+			}
+		});
+	},
+
+	createPosNegHandler: function(){
+		$("#posNeg").on("click", function(){
+			// if there is an error, function will return and button won't work
+			if(controller.checkForError()){
+				return;
+			// else continue
+			} else {
+				var num = controller.getDisplayNumber() * -1;
+				controller.setDisplayNumber("");
+				controller.setDisplayNumber(num);
+				view.displayNumber(controller.getDisplayNumber());
 			}
 		});
 	}
