@@ -309,7 +309,10 @@ view = {
 			if(controller.checkForError()){
 				return;
 			// else continue
-			} else {
+			} else if(controller.getOperator() === "equals"){
+				var newTotal = controller.setTotal(controller.getTotal() * -1);
+				view.displayNumber(controller.getTotal());
+			} else{
 				var num = controller.getDisplayNumber() * -1;
 				controller.setDisplayNumber("");
 				controller.setDisplayNumber(num);
