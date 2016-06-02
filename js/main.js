@@ -222,9 +222,6 @@ view = {
 			var locOfExp = numString.indexOf('e');
 			// if exponent present
 			if (locOfExp !== -1 && numString.length > 15){
-				console.log("reached");
-				console.log(numString.slice(0,10));
-				console.log(numString.slice(locOfExp));
 				// make sure to have exponent shown
 				return view.displayNumber(numString.slice(0,10) + numString.slice(locOfExp));		
 			} else {
@@ -241,17 +238,17 @@ view = {
 
 	createNumHandler: function(button, num){
 		button.on("click", function(){
-			// if there is an error, return
+			// if there is an error, number buttons won't function
 			if(controller.checkForError()){
 				return;
-			// else continue 
+			// else continue
 			} else {
-				controller.setDisplayNumber(num);
 				if(controller.getOperator() === "equals"){
-					controller.setTotal(null);
+					return controller.setTotal(null); // also, number buttons won't function until another operator is clicked
 				} else {
-				var newNum = controller.getDisplayNumber();
-				view.displayNumber(newNum);
+					controller.setDisplayNumber(num);
+					var newNum = controller.getDisplayNumber();
+					view.displayNumber(newNum);
 				}
 			}
 		});
@@ -264,7 +261,6 @@ view = {
 			if (total === null){
 				view.displayNumber(controller.getStoredNumber());
 			} else {
-				console.log(controller.getTotal());
 				view.displayNumber(controller.getTotal());
 			}
 		});
@@ -282,17 +278,6 @@ view = {
 				if (total === null){
 					return;
 				} else {
-					// console.log(typeof(total));
-					// var stringTotal = total.toString();
-					// var locOfExp = stringTotal.indexOf('e');
-					// if (locOfExp !== -1 && stringTotal.length > 15){
-					// 	///111.199999999999911e43
-					// 	console.log("reached");
-					// 	console.log(stringTotal.slice(0,10));
-					// 	console.log(stringTotal.slice(locOfExp));
-					// 	view.displayNumber(stringTotal.slice(0,10) + stringTotal.slice(locOfExp));
-					// 	return;
-					// }
 					view.displayNumber(total);
 				}
 			}
