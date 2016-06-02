@@ -20,52 +20,51 @@
 
 	<!-- Bootstrap JS CDN -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
 </head>
+
 <body>
 
 <div id="calculator" class="container">
 	<div class="row">
-		<div class="col-xs-9">Calculator</div>
+		<div class="col-xs-9"><div id="title">Calculator</div></div>
 		<div class="col-xs-3"></div>
 	</div>
 	<div class="row">
 		<div class="col-xs-12"> <div class="display"></div></div>
 	</div>
-	<div class="row">
-		<div class="col-xs-3"> <button id="ce" class="btn btn-default btn-custom">CE</button> </div>
-		<div class="col-xs-3"> <button id="c" class="btn btn-default btn-custom">C</button> </div>
-		<div class="col-xs-3"> <button id="remove" class="btn btn-default btn-custom"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i></i></button> </div>
-		<div class="col-xs-3"> <button class="btn btn-default btn-custom operator">/</button> </div>
+	<div class="row fix">
+		<div class="col-xs-3"> <button id="ce" class="btn btn-custom">CE</button> </div>
+		<div class="col-xs-3"> <button id="c" class="btn btn-custom">C</button> </div>
+		<div class="col-xs-3"> <button id="remove" class="btn btn-custom"><i class="fa fa-arrow-left" aria-hidden="true"></i></button> </div>
+		<div class="col-xs-3"> <button class="btn btn-custom operator">/</button> </div>
 	</div>
-	<div class="row">
-		<div class="col-xs-3"> <button class="btn btn-default btn-custom num" value="7" >7</button> </div>
-		<div class="col-xs-3"> <button class="btn btn-default btn-custom num">8</button> </div>
-		<div class="col-xs-3"> <button class="btn btn-default btn-custom num">9</button> </div>
-		<div class="col-xs-3"> <button class="btn btn-default btn-custom operator">*</button> </div>
+	<div class="row fix">
+		<div class="col-xs-3"> <button class="btn btn-custom num" value="7" >7</button> </div>
+		<div class="col-xs-3"> <button class="btn btn-custom num">8</button> </div>
+		<div class="col-xs-3"> <button class="btn btn-custom num">9</button> </div>
+		<div class="col-xs-3"> <button class="btn btn-custom operator">*</button> </div>
 	</div>
-	<div class="row">
-		<div class="col-xs-3"> <button class="btn btn-default btn-custom num">4</button> </div>
-		<div class="col-xs-3"> <button class="btn btn-default btn-custom num">5</button> </div>
-		<div class="col-xs-3"> <button class="btn btn-default btn-custom num">6</button> </div>
-		<div class="col-xs-3"> <button class="btn btn-default btn-custom operator">-</button> </div>		
+	<div class="row fix">
+		<div class="col-xs-3"> <button class="btn btn-custom num">4</button> </div>
+		<div class="col-xs-3"> <button class="btn btn-custom num">5</button> </div>
+		<div class="col-xs-3"> <button class="btn btn-custom num">6</button> </div>
+		<div class="col-xs-3"> <button class="btn btn-custom operator">-</button> </div>		
 	</div>
-	<div class="row">
-		<div class="col-xs-3"> <button class="btn btn-default btn-custom num">1</button> </div>
-		<div class="col-xs-3"> <button class="btn btn-default btn-custom num">2</button> </div>
-		<div class="col-xs-3"> <button class="btn btn-default btn-custom num">3</button> </div>
-		<div class="col-xs-3"> <button id="+" class="btn btn-default btn-custom operator">+</button> </div>		
+	<div class="row fix">
+		<div class="col-xs-3"> <button class="btn btn-custom num">1</button> </div>
+		<div class="col-xs-3"> <button class="btn btn-custom num">2</button> </div>
+		<div class="col-xs-3"> <button class="btn btn-custom num">3</button> </div>
+		<div class="col-xs-3"> <button id="+" class="btn btn-custom operator">+</button> </div>		
 	</div>
+	<div class="row fix">
+		<div class="col-xs-3"> <button id="posNeg" class="btn btn-custom">+/-</button> </div>
+		<div class="col-xs-3"> <button class="btn btn-custom num">0</button> </div>
+		<div class="col-xs-3"> <button id="decimal" class="btn btn-custom">.</button> </div>
+		<div class="col-xs-3"> <button id="equals" class="btn btn-custom">=</button> </div>		
+	</div>
+	
+</div> <!-- End of container -->
 
-	<div class="row">
-		<div class="col-xs-3"> <button id="posNeg" class="btn btn-default btn-custom">+/-</button> </div>
-		<div class="col-xs-3"> <button class="btn btn-default btn-custom num">0</button> </div>
-		<div class="col-xs-3"> <button id="decimal" class="btn btn-default btn-custom">.</button> </div>
-		<div class="col-xs-3"> <button id="equals" class="btn btn-default btn-custom">=</button> </div>		
-	</div>
-
-		
-</div>
 
  <!-- Main JS file -->
  <script src="js/main.js"></script>
