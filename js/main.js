@@ -35,6 +35,7 @@ var controller = {
 	},
 
 	setDisplayNumber: function(num){
+		// used when remove button has been clicked
 		if(num[0] === "X"){
 			if(num === "XO"){
 				model.displayNumber = "0";
@@ -66,6 +67,7 @@ var controller = {
 			} else {
 				model.displayNumber = num;
 			}
+		// used when a C or CE button has been pressed
 		} else {
 			if(num === "clear"){
 				model.displayNumber = "0";
@@ -145,7 +147,6 @@ var controller = {
 			return;
 		}
 		this.checkCalculation();
-		// return;
 		var number = controller.getDisplayNumber();
 		if(number.length > 0){
 			this.storeNumber(number);
@@ -196,18 +197,8 @@ view = {
 
 	init: function(){
 		view.displayNumber(controller.getDisplayNumber());
-		//loop through number buttons and create click handlers
-		for (var n = 0; n < this.numButtons.length; n++){
-			var numButton = $(this.numButtons[n]);
-			var num = numButton.text();
-			this.createNumHandler(numButton, num);
-		}
-		//loop through operator buttons and create click handlers
-		for (var i = 0; i < this.operatorButtons.length; i++){
-			var operatorButton = $(this.operatorButtons[i]);
-			var operator = operatorButton.text();
-			this.createOperHandler(operatorButton, operator);
-		}
+		view.createNumHandler();
+		view.createOperHandler();
 		view.createEqualHandler();
 		view.createCEHandler();
 		view.createCHandler();
@@ -218,12 +209,13 @@ view = {
 
 	displayNumber: function(num){
 		var numString = num.toString();
+		// if num is a negative number
 		if(numString.indexOf("-") != -1){
 			var locOfExp = numString.indexOf('e');
-			// if exponent present
+			// if exponent present and numString's length is > 15
 			if (locOfExp !== -1 && numString.length > 15){
 				// make sure to have exponent shown
-				return view.displayNumber(numString.slice(0,10) + numString.slice(locOfExp));		
+				view.displayNumber(numString.slice(0,10) + numString.slice(locOfExp));		
 			} else {
 				$(".display").text(numString.slice(0,16));
 			}
@@ -232,30 +224,25 @@ view = {
 		}
 	},
 
-	renderOperator: function(operator){
-		$(".display").text(operator);
-	},
-
-	createNumHandler: function(button, num){
-		button.on("click", function(){
+	createNumHandler: function(){
+		$(".num").on("click", function(){
+			var num = $(this).text();
 			// if there is an error, number buttons won't function
 			if(controller.checkForError()){
 				return;
-			// else continue
+			} else if(controller.getOperator() === "equals"){
+				controller.setTotal(null); // also, number buttons won't function until another operator is clicked
 			} else {
-				if(controller.getOperator() === "equals"){
-					return controller.setTotal(null); // also, number buttons won't function until another operator is clicked
-				} else {
-					controller.setDisplayNumber(num);
-					var newNum = controller.getDisplayNumber();
-					view.displayNumber(newNum);
-				}
+				controller.setDisplayNumber(num);
+				var newNum = controller.getDisplayNumber();
+				view.displayNumber(newNum);
 			}
 		});
 	},
 
-	createOperHandler: function(button, operator){
-		button.on("click", function(){
+	createOperHandler: function(){
+		$(".operator").on("click", function(){
+			var operator = $(this).text();
 			controller.setOperator(operator);
 			var total = controller.getTotal();
 			if (total === null){
