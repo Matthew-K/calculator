@@ -349,8 +349,8 @@ view = {
 				var displayNumber = controller.getDisplayNumber();
 				if (displayNumber.length >= 1 && displayNumber !== "0"){
 					// check if only "." and "0"s remain in the displayNumber. If so, pass "X0" to controller.setDisplayNumber();
-					var exp = /[1-9]/g;
-					var check = displayNumber.match(exp);
+					var regex = /[1-9]/g;
+					var check = displayNumber.match(regex);
 					if(check.length === 1){
 						controller.setDisplayNumber("X0");
 					// else if the displayNumber has a "-" and only one number, pass "X0" to controller.setDisplayNumber(); 
@@ -360,7 +360,7 @@ view = {
 					} else if (displayNumber.length === 1){
 						controller.setDisplayNumber("X0");
 					// else if displayNumber has an exponent, pass "X0" to controller.setDisplayNumber();
-					} else if(displayNumber.indexOf("e")){
+					} else if(displayNumber.indexOf("e") !== -1){
 						controller.setDisplayNumber("X0");
 					// else pass in "X" + the displayNumber without it's last number to controller.setDisplayNumber(). ex: if display number is 1234 pass in "X123"
 					}else {
