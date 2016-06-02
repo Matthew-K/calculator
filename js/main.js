@@ -374,12 +374,15 @@ view = {
 					// else if the displayNumber is only one number, pass "X0" to controller.setDisplayNumber();
 					} else if (displayNumber.length === 1){
 						controller.setDisplayNumber("X0");
+					// else if displayNumber has an exponent, pass "X0" to controller.setDisplayNumber();
+					} else if(displayNumber.indexOf("e")){
+						controller.setDisplayNumber("X0");
 					// else pass in "X" + the displayNumber without it's last number to controller.setDisplayNumber(). ex: if display number is 1234 pass in "X123"
-					} else {
+					}else {
 						var newDisplay = displayNumber.slice(0, displayNumber.length -1);
 						model.displayNumber = newDisplay;
 						controller.setDisplayNumber("X" + newDisplay);
-					}
+					}		
 					// controller.setDisplayNumber() has now changed model.displayNumber depending on the input passed from above. Display it.
 					return view.displayNumber(controller.getDisplayNumber());
 				}
